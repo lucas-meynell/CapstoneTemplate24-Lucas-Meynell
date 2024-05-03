@@ -4,11 +4,11 @@
 
 <div class="row">
     <div class="col-4">
-        <h1 class="display-1">All Blogs</h1>
+        <h1 class="display-1">All Meals</h1>
     </div>
     <div class="col">
-        <a href="/sleep/new" class="btn btn-primary btn-sm mt-5" role="button">New Sleep</a>
-        <a href="/sleepgraph" class="btn btn-primary btn-sm mt-5" role="button">Graph it!</a>
+        <a href="/meal/new" class="btn btn-primary btn-sm mt-5" role="button">New Meal</a>
+        
     </div>
 </div>
 
@@ -17,10 +17,10 @@
         <div class="row border-bottom">
 
         <div clas="col">
-                <a data-toggle="tooltip" data-placement="top" title="Delete Sleep" href="/sleep/delete/{{sleep.id}}">
+                <a data-toggle="tooltip" data-placement="top" title="Delete Meal" href="/sleep/delete/{{sleep.id}}">
                     <img width="20" class="bottom-image" src="/static/delete.png">
                 </a>
-                <a data-toggle="tooltip" data-placement="top" title="Edit Sleep" href="/sleep/edit/{{sleep.id}}">
+                <a data-toggle="tooltip" data-placement="top" title="Edit Meal" href="/sleep/edit/{{sleep.id}}">
                     <img width="20" class="bottom-image" src="/static/edit.png">
                 </a>
         </div>
@@ -31,12 +31,12 @@
                 {% endif %}
 
                 <a href="/sleep/{{sleep.id}}">
-                    {{moment(sleep.sleep_date).format('MMMM Do YYYY')}}
+                    {{moment(sleep.mealdate).format('MMMM Do YYYY')}}
                 </a>
             </div>
             <div class="col-2">
                 {% if loop.index == 1 %}
-                <h3>Sleeper</h3>
+                <h3>Eater</h3>
                 {% endif %}
                 {{sleep.sleeper.fname}} {{sleep.sleeper.lname}}
             </div>
@@ -48,15 +48,15 @@
             </div>
             <div class="col">
                 {% if loop.index == 1 %}
-                    <h3>Start</h3>
+                    <h3>Food</h3>
                 {% endif %}
-                {{sleep.start}}
+                {{sleep.foodname}}
             </div>
             <div class="col">
                 {% if loop.index == 1 %}
-                    <h3>End</h3>
+                    <h3>Meal</h3>
                 {% endif %}
-                {{sleep.end}}
+                {{sleep.meal}}
             </div>
             <div class="col">
                 {% if loop.index == 1 %}
@@ -72,14 +72,14 @@
             </div>
             <div class="col">
                 {% if loop.index == 1 %}
-                    <h3>Mins to Sleep</h3>
+                    <h3>Total Meals today</h3>
                 {% endif %}
-                {{sleep.minstosleep}}
+                {{sleep.totalmeals}}
             </div>
         </div>
     {% endfor %}
 {% else %}
-    <h1>No Sleeps</h1>
+    <h1>No Meals</h1>
 {% endif %}
 
 {% endblock %}

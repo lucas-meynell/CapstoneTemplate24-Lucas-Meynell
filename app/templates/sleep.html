@@ -12,17 +12,16 @@
         </a>
     {% endif %}
     <h1 class="display-2">{{sleep.sleeper.fname}} {{sleep.sleeper.lname}} </h1>
-    <h1 class="display-5">{{moment(sleep.sleep_date).format('MMMM Do YYYY')}}</h1>
+    <h1 class="display-5">{{moment(sleep.mealdate).format('MMMM Do YYYY')}}</h1>
     <p class="fs-3 text-break">
         {% if sleep.sleeper.image %}
             <img width="120" class="img-thumbnail float-start me-2" src="data:image;base64,{{base64encode(sleep.sleeper.image.read())}}">
         {% endif %}
-            Hours: {{sleep.hours}} <br>
-            Start: {{sleep.start}} <br>
-            End: {{sleep.end}} <br>
+            Name of Food: {{sleep.foodname}} <br>
+            Meal: {{sleep.meal}} <br>
             Rating: {{sleep.rating}} <br>
             How I felt: {{sleep.feel}} <br>
-            Minsutes to sleep: {{sleep.minstosleep}}
+            Total Meals: {{sleep.totalmeals}}
 {% else %}
     No Sleep Here
 {% endif %}

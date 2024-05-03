@@ -12,6 +12,8 @@ from wtforms_components import TimeField
 class ProfileForm(FlaskForm):
     fname = StringField('First Name', validators=[DataRequired()])
     lname = StringField('Last Name', validators=[DataRequired()]) 
+    role = SelectField('Role', choices=[("Teacher", "Teacher"),("Student", "Student")])
+    age = StringField('Age', validators=[DataRequired()])
     image = FileField("Image") 
     submit = SubmitField('Post')
 
@@ -23,13 +25,12 @@ class ConsentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class SleepForm(FlaskForm):
-    rating = SelectField("How would you rate your sleep: 5 is great, 1 is poor", choices=[(None,'---'),(1,1),(2,2),(3,3),(4,4),(5,5)], validators=[DataRequired()])
-    starttime = TimeField("Start Time")   
-    endtime = TimeField("End Time")   
-    feel = SelectField("How did you feel when you woke up: 5 is great, 1 is poor", choices=[(None,'---'),(1,1),(2,2),(3,3),(4,4),(5,5)], validators=[DataRequired()])
-    sleep_date = DateField("What date did you go to sleep")
-    wake_date = DateField("What date did you wake up")
-    minstosleep = IntegerField("How many minutes did it take you to fall asleep?", validators=[NumberRange(min=0,max=180, message="Enter a number between 0 and 180.")])
+    rating = SelectField("How good was the food: 5 is great, 1 is poor", choices=[(None,'---'),(1,1),(2,2),(3,3),(4,4),(5,5)])
+    foodname = StringField("What did you eat")   
+    meal = SelectField("What meal was this for?", choices=[(None,'---'),("Breakfast","breakfast"),("Lunch","lunch"),("Dinner","dinner")])   
+    feel = SelectField("How did you feel after eating this food: 5 is healthy, 1 is guilty", choices=[(None,'---'),(1,1),(2,2),(3,3),(4,4),(5,5)])
+    mealdate = DateField("What date did you eat this food")
+    totalmeals = IntegerField("How many total meals have you had today?", validators=[NumberRange(min=0,max=180, message="Enter a number between 0 and 180.")])
     submit = SubmitField("Submit")
 
 class BlogForm(FlaskForm):
@@ -50,3 +51,10 @@ class ClinicForm(FlaskForm):
     zipcode = StringField('Zipcode',validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class Food(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    createdate = DateField("When did you have this")
+    foodname = StringField()
+    foodrating = StringField('Rating', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])

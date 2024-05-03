@@ -3,7 +3,7 @@ from app import app
 import mongoengine.errors
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user
-from app.classes.data import Sleep, User
+from app.classes.data import Food, User
 from app.classes.forms import SleepForm, ConsentForm
 from flask_login import login_required
 import datetime as dt
@@ -35,23 +35,19 @@ def consent():
 def overview():
     return render_template('overview.html')
 
-@app.route('/sleep/new', methods=['GET', 'POST'])
+@app.route('/meal/new', methods=['GET', 'POST'])
 @login_required
 def sleepNew():
     form = SleepForm()
     if form.validate_on_submit():
-        startDT = dt.datetime.combine(form.sleep_date.data, form.starttime.data)
-        endDT = dt.datetime.combine(form.wake_date.data, form.endtime.data)
-        diff = startDT - endDT
-        hours = diff.seconds/60/60
-        newSleep = Sleep(
-            hours = hours,
+        newSleep = Food(
+            mealdate = form.mealdate.data,
             sleeper = current_user,
             rating = form.rating.data,
-            start = startDT,
-            end = endDT,
+            foodname = form.foodname.data,
+            meal = form.meal.data,
             feel = form.feel.data,
-            minstosleep = form.minstosleep.data,
+            totalmeals = form.totalmeals.data,
         )
         newSleep.save()
         return redirect(url_for("sleep",sleepId=newSleep.id))
@@ -69,66 +65,57 @@ def sleepNew():
 
 def sleepEdit(sleepId):
     form = SleepForm()
-    editSleep = Sleep.objects.get(id=sleepId)
+    editSleep = Food.objects.get(id=sleepId)
 
     if editSleep.sleeper != current_user:
         flash("You can't edit a sleep you don't own.")
         return redirect(url_for('sleeps'))
     
     if form.validate_on_submit():
-        startDT = dt.datetime.combine(form.sleep_date.data, form.starttime.data)
-        endDT = dt.datetime.combine(form.wake_date.data, form.endtime.data)
-        diff = endDT - startDT
-        hours = diff.seconds/60/60
 
         editSleep.update(
-            hours = hours,
+             mealdate = form.mealdate.data,
+            sleeper = current_user,
             rating = form.rating.data,
-            start = startDT,
-            end = endDT,
+            foodname = form.foodname.data,
+            meal = form.meal.data,
             feel = form.feel.data,
-            minstosleep = form.minstosleep.data
+            totalmeals = form.totalmeals.data,
         )
         return redirect(url_for("sleep",sleepId=editSleep.id))
     
-    form.sleep_date.process_data(editSleep.start.date())
-    form.starttime.process_data(editSleep.start.time())
-    form.wake_date.process_data(editSleep.end.date())
-    form.endtime.process_data(editSleep.end.time())
     form.rating.process_data(editSleep.rating)
     form.feel.process_data(editSleep.feel)
-    form.minstosleep.data = editSleep.minstosleep
+    form.totalmeals.data = editSleep.totalmeals
     return render_template("sleepform.html",form=form)
 
 @app.route('/sleep/<sleepId>')
 @login_required
 
 def sleep(sleepId):
-    thisSleep = Sleep.objects.get(id=sleepId)
+    thisSleep = Food.objects.get(id=sleepId)
     return render_template("sleep.html",sleep=thisSleep)
 
-@app.route('/sleeps')
+@app.route('/meals')
 @login_required
 
 def sleeps():
-    sleeps = Sleep.objects()
+    sleeps = Food.objects()
     return render_template("sleeps.html",sleeps=sleeps)
 
 @app.route('/sleep/delete/<sleepId>')
 @login_required
 
 def sleepDelete(sleepId):
-    delSleep = Sleep.objects.get(id=sleepId)
-    sleepDate = delSleep.sleep_date
+    delSleep = Food.objects.get(id=sleepId)
     delSleep.delete()
-    flash(f"sleep with date {sleepDate} has been deleted.")
-    return redirect(url_for('sleeps'))
+    return redirect(url_for('meals'))
 
 @app.route('/sleepgraph')
 @login_required
 
 def sleepgraph():
-    sleeps = Sleep.objects()
+    foods = Food.objects()
 
 
     hours = []

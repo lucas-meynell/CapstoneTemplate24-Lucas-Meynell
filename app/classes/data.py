@@ -35,20 +35,20 @@ class User(UserMixin, Document):
     adult_lname = StringField()
     adult_email = StringField()
     consent = BooleanField(default=False)
-
+    role = StringField()
+    age = StringField()
     meta = {
         'ordering': ['lname','fname']
     }
 
-class Sleep(Document):
+class Food(Document):
     sleeper = ReferenceField('User',reverse_delete_rule=CASCADE)
     rating = IntField()
     feel = IntField()
-    start = DateTimeField()
-    end = DateTimeField()
-    sleep_date = DateTimeField()
-    hours = FloatField()
-    minstosleep = IntField()
+    foodname = StringField()
+    meal = StringField()
+    mealdate = DateTimeField()
+    totalmeals = IntField()
 
     meta = {
         'ordering': ['sleep_date']
